@@ -9,9 +9,26 @@ float speeds[NUM_OF_MOTORS] = {0,};
 float speeds_old[NUM_OF_MOTORS] = {0,};
 float errs[NUM_OF_MOTORS] = {0,};
 float errs_old[NUM_OF_MOTORS] = {0,};
+int pwm_dutys[NUM_OF_MOTORS] = {0,};
+float int_errs[NUM_OF_MOTORS] = {0,};
+float diff_errs[NUM_OF_MOTORS] = {0,};
 
 bool do_pid(struct repeating_timer *t) {
+    int cnt;
+    for (int i=0; i<NUM_OF_MOTORS; ++i) {
+        cnt = speedmeter_counts[i];
+        speeds[i] = (float)(cnt-speedmeter_counts_old[i])/(float)(PID_INTERVAL_MS/1000.0);
+        errs[i] = speeds[i] - target_speeds[i];
+        int_errs[i] += errs[i];
+        diff_errs[i] = errs[i] - errs_old[i];
+        
+        pwm_dutys[i] += motor_kp*errs[i] + motor_ki*int_errs[i] + motor_kd*diff_errs[i];
+        motor_set_pwm_duty(motors+i, pwm_dutys[i]);
 
+        speedmeter_counts_old[i] = cnt;
+        speeds_old[i] = speeds[i];
+        errs_old[i] = errs[i];
+    }
 }
 
 void start_pid() {

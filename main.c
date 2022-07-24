@@ -9,7 +9,7 @@ int32_t count=0;
 
 bool print_count(struct repeating_timer *t) {
     static bool value = true;
-    printf("%d\n", speedmeter_counts[0]);
+    printf("%d, %d; %f, %f\n", speedmeter_counts[0], speedmeter_counts[1], speeds[0], speeds[1]);
     gpio_put(PICO_DEFAULT_LED_PIN, value);
     value = !value;
     return true;
