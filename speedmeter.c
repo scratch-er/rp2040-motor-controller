@@ -1,14 +1,14 @@
 #include "speedmeter.h"
 
-void speedmeter_program_init(PIO pio, uint sm, uint offset, uint dma_chan, int32_t *dest, uint pin_a, uint pin_b) {
+void speedmeter_program_init(PIO pio, uint sm, uint offset, uint dma_chan, volatile int32_t *dest, struct speedmeter *s) {
     // 设定PIO状态机
     pio_sm_config config_sm = speedmeter_program_get_default_config(offset);
-    sm_config_set_in_pins(&config_sm, pin_a);
-    sm_config_set_jmp_pin(&config_sm, pin_b);
-    pio_gpio_init(pio, pin_a);
-    pio_gpio_init(pio, pin_b);
-    pio_sm_set_consecutive_pindirs(pio, sm, pin_a, 1, false);
-    pio_sm_set_consecutive_pindirs(pio, sm, pin_b, 1, false);
+    sm_config_set_in_pins(&config_sm, s->pin_a);
+    sm_config_set_jmp_pin(&config_sm, s->pin_b);
+    pio_gpio_init(pio, s->pin_a);
+    pio_gpio_init(pio, s->pin_b);
+    pio_sm_set_consecutive_pindirs(pio, sm, s->pin_a, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, s->pin_b, 1, false);
 
     // 配置DMA通道，实现计数值自动传输
     dma_channel_config config_dma = dma_channel_get_default_config(dma_chan);

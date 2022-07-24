@@ -7,7 +7,7 @@ include(pico_sdk_import.cmake)
 project(motor-controller C CXX ASM)
 pico_sdk_init()
 
-add_executable(motor-controller main.c speedmeter.c speedmeter.h motor.c motor.h pid.c pid.h i2c_interface.c i2c_interface.h)
+add_executable(motor-controller main.c config.c config.h speedmeter.c speedmeter.h motor.c motor.h pid.c pid.h i2c_interface.c i2c_interface.h)
 pico_generate_pio_header(motor-controller ${CMAKE_CURRENT_LIST_DIR}/speedmeter.pio)
 
 pico_set_program_name(motor-controller "motor-controller")

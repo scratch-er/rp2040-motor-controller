@@ -26,7 +26,8 @@ int main() {
     uint offset = pio_add_program(pio, &speedmeter_program);
     uint sm = pio_claim_unused_sm(pio, true);
 
-    speedmeter_program_init(pio, sm, offset, 0, &count, 2, 3);
+    struct speedmeter s={2, 3};
+    speedmeter_program_init(pio, sm, offset, 0, &count, &s);
 
     struct repeating_timer timer;
     add_repeating_timer_ms(500, print_count, NULL, &timer);

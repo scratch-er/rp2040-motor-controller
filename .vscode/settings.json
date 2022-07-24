@@ -14,6 +14,7 @@
                },
     },
     "files.associations": {
-      "speedmeter.pio.h": "c"
+      "speedmeter.pio.h": "c",
+      "timer.h": "c"
     },
 }
