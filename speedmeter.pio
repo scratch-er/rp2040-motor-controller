@@ -1,0 +1,24 @@
+.program speedmeter
+.wrap_target
+    ; 等待直到上升沿
+    wait 0 pin 0
+    wait 1 pin 0
+    ; 计数减一
+    jmp x--, next
+next:
+    ; 根据编码器另一输出电平判断方向
+    jmp pin, forward
+backward:
+    ; 反转，计数值取反后输出
+    mov isr, ~x
+    jmp update
+forward:
+    ; 正转，计数值原样输出
+    mov isr, x
+    nop
+update:
+    push
+    ; 更新计数初值
+    pull noblock
+    mov x, osr
+.wrap
