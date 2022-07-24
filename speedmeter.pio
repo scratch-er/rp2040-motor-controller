@@ -3,22 +3,22 @@
     ; 等待直到上升沿
     wait 0 pin 0
     wait 1 pin 0
-    ; 计数减一
-    jmp x--, next
-next:
     ; 根据编码器另一输出电平判断方向
     jmp pin, forward
 backward:
-    ; 反转，计数值取反后输出
-    mov isr, ~x
+    ; 反转，计数减一
+    jmp x--, next0
+next0:
+    nop
     jmp update
 forward:
-    ; 正转，计数值原样输出
-    mov isr, x
-    nop
+    ; 正转，计数加一
+    mov y, ~x
+    jmp y--, next1
+next1:
+    mov x, ~y
 update:
+    ; 输出计数值
+    mov isr, x
     push
-    ; 更新计数初值
-    pull noblock
-    mov x, osr
 .wrap
