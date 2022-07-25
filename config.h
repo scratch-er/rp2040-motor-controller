@@ -9,8 +9,8 @@
 #define PID_INTERVAL_MS 20
 
 // PID参数的默认值
-#define DEFAULT_KP 0.0
-#define DEFAULT_KI 0.0
+#define DEFAULT_KP -0.05
+#define DEFAULT_KI -0.0
 #define DEFAULT_KD 0.0
 
 // 电机的数量

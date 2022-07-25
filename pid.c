@@ -4,8 +4,8 @@ float motor_kp=DEFAULT_KP, motor_ki=DEFAULT_KI, motor_kd=DEFAULT_KD;
 struct repeating_timer pid_timer;
 volatile int32_t speedmeter_counts[NUM_OF_MOTORS] = {0,};
 int32_t speedmeter_counts_old[NUM_OF_MOTORS] = {0,};
-float target_speeds[NUM_OF_MOTORS] = {0,};
-float speeds[NUM_OF_MOTORS] = {0,};
+volatile float target_speeds[NUM_OF_MOTORS] = {0,};
+volatile float speeds[NUM_OF_MOTORS] = {0,};
 float speeds_old[NUM_OF_MOTORS] = {0,};
 float errs[NUM_OF_MOTORS] = {0,};
 float errs_old[NUM_OF_MOTORS] = {0,};
@@ -29,9 +29,10 @@ bool do_pid(struct repeating_timer *t) {
         speeds_old[i] = speeds[i];
         errs_old[i] = errs[i];
     }
+    printf("speed=%f, %f; err=%f, %f; dutys=%d, %d\n", speeds[0], speeds[1], errs[0], errs[1], pwm_dutys[0], pwm_dutys[1]);
 }
 
-void start_pid() {
+void pid_init() {
     // 初始化所有编码器和电机
     uint offset = pio_add_program(SPEEDMETER_PIO, &speedmeter_program);
     for (int i=0; i<NUM_OF_MOTORS; ++i) {

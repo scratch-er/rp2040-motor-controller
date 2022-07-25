@@ -4,12 +4,12 @@
 #include "hardware/dma.h"
 #include "speedmeter.pio.h"
 #include "pid.h"
+#include "config.h"
 
 int32_t count=0;
 
 bool print_count(struct repeating_timer *t) {
     static bool value = true;
-    printf("%d, %d; %f, %f\n", speedmeter_counts[0], speedmeter_counts[1], speeds[0], speeds[1]);
     gpio_put(PICO_DEFAULT_LED_PIN, value);
     value = !value;
     return true;
@@ -22,20 +22,17 @@ int main() {
     gpio_init(PICO_DEFAULT_LED_PIN);
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-    // PIO pio = pio0;
-    // uint offset = pio_add_program(pio, &speedmeter_program);
-    // uint sm = pio_claim_unused_sm(pio, true);
-
-    // struct speedmeter s={2, 3};
-    // speedmeter_program_init(pio, sm, offset, 0, &count, &s);
-
-    start_pid();
+    pid_init();
 
     struct repeating_timer timer;
-    add_repeating_timer_ms(500, print_count, NULL, &timer);
+    // add_repeating_timer_ms(500, print_count, NULL, &timer);
 
-    while (true) {
-        tight_loop_contents();
+    target_speeds[0] = 15000;
+    target_speeds[1] = 8000;
+    
+    while (1) {
+        // do_pid(NULL);
+        sleep_ms(PID_INTERVAL_MS);
     }
 
     return 0;
