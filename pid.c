@@ -1,4 +1,5 @@
 #include "pid.h"
+#include <stdio.h>
 
 float motor_kp=DEFAULT_KP, motor_ki=DEFAULT_KI, motor_kd=DEFAULT_KD;
 struct repeating_timer pid_timer;

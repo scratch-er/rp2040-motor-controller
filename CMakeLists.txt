@@ -16,7 +16,7 @@ pico_set_program_version(motor-controller "0.1")
 pico_enable_stdio_uart(motor-controller 1)
 pico_enable_stdio_usb(motor-controller 1)
 
-target_link_libraries(motor-controller pico_stdlib hardware_pio hardware_dma hardware_pwm hardware_i2c)
+target_link_libraries(motor-controller pico_stdlib pico_multicore hardware_pio hardware_dma hardware_pwm hardware_i2c)
 
 pico_add_extra_outputs(motor-controller)
 

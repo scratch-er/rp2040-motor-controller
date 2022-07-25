@@ -5,6 +5,8 @@
 #include "speedmeter.pio.h"
 #include "pid.h"
 #include "config.h"
+#include "pico/multicore.h"
+#include "i2c_interface.h"
 
 int32_t count=0;
 
@@ -30,6 +32,9 @@ int main() {
     target_speeds[0] = 15000;
     target_speeds[1] = 8000;
     
+    i2c_interface_init();
+    multicore_launch_core1(i2c_daemon);
+
     while (1) {
         // do_pid(NULL);
         sleep_ms(PID_INTERVAL_MS);
