@@ -18,12 +18,16 @@ inline void motor_set_pwm_duty(struct motor *m, int speed) {
         pwm_set_gpio_level(m->pin_a, 0);
         pwm_set_gpio_level(m->pin_b, 0);
     } else if (speed > 0) {
-        speed &= 0xFFFF;
+        if (speed > 65535) {
+            speed = 65535;
+        }
         pwm_set_gpio_level(m->pin_b, 0);
         pwm_set_gpio_level(m->pin_a, speed);
     } else if (speed < 0) {
         speed = -speed;
-        speed &= 0xFFFF;
+        if (speed > 65535) {
+            speed = 65535;
+        }
         pwm_set_gpio_level(m->pin_a, 0);
         pwm_set_gpio_level(m->pin_b, speed);
     }
